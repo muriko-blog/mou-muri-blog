@@ -1,0 +1,60 @@
+---
+interface Props {
+	href: string;
+	label: string;
+	sub?: string;
+}
+const { href, label, sub } = Astro.props;
+const isExternal = href.startsWith('http');
+---
+
+<div class="cta-wrap">
+	<a
+		class="cta"
+		href={href}
+		{...isExternal ? { target: '_blank', rel: 'nofollow sponsored noopener' } : {}}
+	>
+		<span class="cta-label">{label}</span>
+		<span class="cta-arrow">›</span>
+	</a>
+	{sub && <p class="cta-sub">{sub}</p>}
+</div>
+
+<style>
+	.cta-wrap {
+		text-align: center;
+		margin: 2em 0;
+	}
+	.cta {
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		gap: 0.5em;
+		width: 100%;
+		max-width: 440px;
+		padding: 1em 1.5em;
+		background: linear-gradient(180deg, #ff8a5c, var(--accent));
+		color: #fff;
+		font-weight: 800;
+		font-size: 1.15rem;
+		border-radius: 999px;
+		text-decoration: none;
+		box-shadow: 0 6px 0 var(--accent-dark), var(--box-shadow);
+		transition: transform 0.1s ease, box-shadow 0.1s ease;
+	}
+	.cta:hover {
+		color: #fff;
+		text-decoration: none;
+		transform: translateY(2px);
+		box-shadow: 0 4px 0 var(--accent-dark), var(--box-shadow);
+	}
+	.cta-arrow {
+		font-size: 1.4rem;
+		line-height: 1;
+	}
+	.cta-sub {
+		margin: 0.7em 0 0;
+		font-size: 0.85rem;
+		color: rgb(var(--gray));
+	}
+</style>

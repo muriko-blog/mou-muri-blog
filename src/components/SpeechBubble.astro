@@ -1,0 +1,102 @@
+---
+interface Props {
+	side?: 'left' | 'right';
+	name?: string;
+	icon?: string; // 絵文字 or 画像URL（将来むりこのイラストに差し替え）
+}
+const { side = 'left', name = 'むりこ', icon = '😮‍💨' } = Astro.props;
+const isImg = icon.startsWith('/') || icon.startsWith('http');
+---
+
+<div class:list={['bubble-row', side]}>
+	<div class="avatar">
+		{isImg ? <img src={icon} alt={name} /> : <span>{icon}</span>}
+		<span class="avatar-name">{name}</span>
+	</div>
+	<div class="bubble">
+		<slot />
+	</div>
+</div>
+
+<style>
+	.bubble-row {
+		display: flex;
+		align-items: flex-start;
+		gap: 0.8em;
+		margin: 1.6em 0;
+	}
+	.bubble-row.right {
+		flex-direction: row-reverse;
+	}
+	.avatar {
+		flex: 0 0 auto;
+		width: 64px;
+		text-align: center;
+	}
+	.avatar > span:first-child {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		width: 64px;
+		height: 64px;
+		border-radius: 50%;
+		background: var(--accent-soft);
+		border: 2px solid var(--accent);
+		font-size: 2rem;
+	}
+	.avatar img {
+		width: 64px;
+		height: 64px;
+		border-radius: 50%;
+		object-fit: cover;
+		border: 2px solid var(--accent);
+	}
+	.avatar-name {
+		display: block;
+		font-size: 0.7rem;
+		color: rgb(var(--gray));
+		margin-top: 0.2em;
+	}
+	.bubble {
+		position: relative;
+		background: var(--surface);
+		border: 1px solid rgb(var(--gray-light));
+		border-radius: 14px;
+		padding: 0.9em 1.2em;
+		max-width: 100%;
+		box-shadow: var(--box-shadow);
+	}
+	.bubble :global(p) {
+		margin: 0;
+	}
+	.bubble :global(p + p) {
+		margin-top: 0.6em;
+	}
+	/* 三角の吹き出ししっぽ */
+	.bubble::before {
+		content: '';
+		position: absolute;
+		top: 18px;
+		border: 8px solid transparent;
+	}
+	.left .bubble::before {
+		left: -16px;
+		border-right-color: rgb(var(--gray-light));
+	}
+	.right .bubble::before {
+		right: -16px;
+		border-left-color: rgb(var(--gray-light));
+	}
+	@media (max-width: 520px) {
+		.avatar,
+		.avatar > span:first-child,
+		.avatar img {
+			width: 48px;
+		}
+		.avatar > span:first-child,
+		.avatar img {
+			height: 48px;
+			font-size: 1.5rem;
+		}
+	}
+</style>

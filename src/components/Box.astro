@@ -1,0 +1,83 @@
+---
+interface Props {
+	type?: 'point' | 'caution' | 'memo' | 'good' | 'bad';
+	title?: string;
+}
+const { type = 'point', title } = Astro.props;
+const preset: Record<string, { icon: string; label: string }> = {
+	point: { icon: '💡', label: 'ポイント' },
+	caution: { icon: '⚠️', label: '注意' },
+	memo: { icon: '📝', label: 'メモ' },
+	good: { icon: '✅', label: 'こんな人におすすめ' },
+	bad: { icon: '🙅', label: 'こんな人には不向き' },
+};
+const { icon, label } = preset[type] ?? preset.point;
+---
+
+<div class:list={['box', type]}>
+	<p class="box-title"><span class="box-icon">{icon}</span>{title ?? label}</p>
+	<div class="box-body">
+		<slot />
+	</div>
+</div>
+
+<style>
+	.box {
+		margin: 1.8em 0;
+		border-radius: var(--radius);
+		border: 1px solid;
+		overflow: hidden;
+	}
+	.box-title {
+		display: flex;
+		align-items: center;
+		gap: 0.5em;
+		margin: 0;
+		padding: 0.6em 1em;
+		font-weight: 800;
+		font-size: 1rem;
+		color: #fff;
+	}
+	.box-body {
+		padding: 1em 1.2em;
+		background: var(--surface);
+	}
+	.box-body :global(p:last-child) {
+		margin-bottom: 0;
+	}
+	.box-body :global(ul) {
+		margin: 0;
+		padding-left: 1.3em;
+	}
+
+	.box.point {
+		border-color: #e3a008;
+	}
+	.box.point .box-title {
+		background: #e3a008;
+	}
+	.box.caution {
+		border-color: #e85d4e;
+	}
+	.box.caution .box-title {
+		background: #e85d4e;
+	}
+	.box.memo {
+		border-color: var(--accent-2);
+	}
+	.box.memo .box-title {
+		background: var(--accent-2);
+	}
+	.box.good {
+		border-color: #3fa34d;
+	}
+	.box.good .box-title {
+		background: #3fa34d;
+	}
+	.box.bad {
+		border-color: #7c7480;
+	}
+	.box.bad .box-title {
+		background: #7c7480;
+	}
+</style>
