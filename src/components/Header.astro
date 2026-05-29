@@ -5,52 +5,84 @@ import HeaderLink from './HeaderLink.astro';
 
 <header>
 	<nav>
-		<h2><a href="/">{SITE_TITLE}</a></h2>
+		<a href="/" class="brand">
+			<span class="brand-mark">😮‍💨</span>
+			<span class="brand-name">{SITE_TITLE}</span>
+		</a>
 		<div class="internal-links">
-			<HeaderLink href="/">ホーム</HeaderLink>
-			<HeaderLink href="/blog">記事一覧</HeaderLink>
-			<HeaderLink href="/about">運営者について</HeaderLink>
+			<HeaderLink href="/" class="internal">ホーム</HeaderLink>
+			<HeaderLink href="/blog" class="internal">記事一覧</HeaderLink>
+			<HeaderLink href="/about" class="internal">運営者について</HeaderLink>
 		</div>
 	</nav>
 </header>
 <style>
 	header {
 		margin: 0;
-		padding: 0 1em;
-		background: white;
-		box-shadow: 0 2px 8px rgba(var(--black), 5%);
-	}
-	h2 {
-		margin: 0;
-		font-size: 1em;
-	}
-
-	h2 a,
-	h2 a.active {
-		text-decoration: none;
+		padding: 0;
+		background: rgba(255, 255, 255, 0.85);
+		backdrop-filter: saturate(150%) blur(8px);
+		border-bottom: 1px solid rgb(var(--gray-light));
+		position: sticky;
+		top: 0;
+		z-index: 50;
 	}
 	nav {
+		max-width: var(--container);
+		margin: 0 auto;
+		padding: 0.6em 1em;
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
+		gap: 1em;
+		flex-wrap: wrap;
 	}
-	nav a {
-		padding: 1em 0.5em;
-		color: var(--black);
-		border-bottom: 4px solid transparent;
-		text-decoration: none;
-	}
-	nav a.active {
-		text-decoration: none;
-		border-bottom-color: var(--accent);
-	}
-	.social-links,
-	.social-links a {
+	.brand {
 		display: flex;
+		align-items: center;
+		gap: 0.4em;
+		text-decoration: none;
+		font-weight: 800;
+		font-size: 1.25rem;
+		color: rgb(var(--black));
 	}
-	@media (max-width: 720px) {
-		.social-links {
-			display: none;
+	.brand:hover {
+		text-decoration: none;
+		color: var(--accent);
+	}
+	.brand-mark {
+		font-size: 1.3rem;
+		line-height: 1;
+	}
+	.internal-links {
+		display: flex;
+		gap: 0.2em;
+	}
+	nav :global(a.internal) {
+		padding: 0.5em 0.9em;
+		color: rgb(var(--gray-dark));
+		border-radius: 999px;
+		text-decoration: none;
+		font-weight: 600;
+		font-size: 0.95rem;
+		transition: background 0.15s ease, color 0.15s ease;
+	}
+	nav :global(a.internal:hover) {
+		background: var(--accent-soft);
+		color: var(--accent-dark);
+		text-decoration: none;
+	}
+	nav :global(a.internal.active) {
+		background: var(--accent);
+		color: #fff;
+	}
+	@media (max-width: 520px) {
+		.brand-name {
+			font-size: 1.05rem;
+		}
+		nav :global(a.internal) {
+			padding: 0.4em 0.6em;
+			font-size: 0.85rem;
 		}
 	}
 </style>

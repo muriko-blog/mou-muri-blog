@@ -3,33 +3,58 @@ const today = new Date();
 ---
 
 <footer>
-	&copy; {today.getFullYear()} もう無理.com / むりこ
-	<div class="footer-links">
-		<a href="/about">運営者について</a>
-		<a href="/privacy">プライバシーポリシー</a>
-		<a href="/disclaimer">免責事項</a>
-		<a href="/contact">お問い合わせ</a>
+	<div class="footer-inner">
+		<p class="footer-brand">😮‍💨 もう無理.com</p>
+		<p class="footer-tagline">共働き子育て世帯のための時短課金レビュー</p>
+		<div class="footer-links">
+			<a href="/about">運営者について</a>
+			<a href="/privacy">プライバシーポリシー</a>
+			<a href="/disclaimer">免責事項</a>
+			<a href="/contact">お問い合わせ</a>
+		</div>
+		<p class="footer-copy">&copy; {today.getFullYear()} もう無理.com / むりこ</p>
 	</div>
 </footer>
 <style>
 	footer {
-		padding: 2em 1em 6em 1em;
-		background: linear-gradient(var(--gray-gradient)) no-repeat;
-		color: rgb(var(--gray));
+		flex-shrink: 0;
+		margin-top: 3em;
+		padding: 2.5em 1em;
+		background: rgb(var(--gray-dark));
+		color: rgba(255, 255, 255, 0.7);
 		text-align: center;
+	}
+	.footer-inner {
+		max-width: var(--container);
+		margin: 0 auto;
+	}
+	.footer-brand {
+		font-weight: 800;
+		font-size: 1.2rem;
+		color: #fff;
+		margin: 0 0 0.2em;
+	}
+	.footer-tagline {
+		margin: 0 0 1.2em;
+		font-size: 0.9rem;
 	}
 	.footer-links {
 		display: flex;
 		flex-wrap: wrap;
 		justify-content: center;
 		gap: 0.5em 1.5em;
-		margin-top: 1em;
-		font-size: 0.9em;
+		margin-bottom: 1.2em;
+		font-size: 0.9rem;
 	}
 	.footer-links a {
-		color: rgb(var(--gray));
+		color: rgba(255, 255, 255, 0.85);
 	}
 	.footer-links a:hover {
-		color: rgb(var(--gray-dark));
+		color: #fff;
+	}
+	.footer-copy {
+		margin: 0;
+		font-size: 0.8rem;
+		color: rgba(255, 255, 255, 0.5);
 	}
 </style>

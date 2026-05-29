@@ -1,8 +1,23 @@
 ---
+import { getCollection } from 'astro:content';
+import { Image } from 'astro:assets';
 import BaseHead from '../components/BaseHead.astro';
 import Footer from '../components/Footer.astro';
 import Header from '../components/Header.astro';
+import FormattedDate from '../components/FormattedDate.astro';
 import { SITE_DESCRIPTION, SITE_TITLE } from '../consts';
+
+const posts = (await getCollection('blog')).sort(
+	(a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
+);
+const latest = posts.slice(0, 6);
+
+const categories = [
+	{ icon: '🍳', name: '食', desc: '宅食・ミールキット・食材宅配' },
+	{ icon: '🧹', name: '家事', desc: '家事代行・時短家電・掃除サービス' },
+	{ icon: '🎒', name: '子育て', desc: '通信教育・オンライン英会話・知育' },
+	{ icon: '🏡', name: '暮らし', desc: 'ふるさと納税・写真整理・サブスク' },
+];
 ---
 
 <!doctype html>
@@ -13,28 +28,257 @@ import { SITE_DESCRIPTION, SITE_TITLE } from '../consts';
 	<body>
 		<Header />
 		<main>
-			<h1>もう無理。を、お金で解決する。</h1>
-			<p>
-				共働きで子育て。仕事も家事も育児も全部やってたら、そりゃ「もう無理」ってなりますよね。
-				このブログは、そんな毎日に疲れた共働き家庭が <strong>「お金で時間を買う」</strong> ためのレビューサイトです。
-			</p>
-			<p>
-				宅食・ミールキット・家事代行・時短家電・通信教育・ふるさと納税……。
-				実際に使ってみて「よかったもの」も「正直イマイチだったもの」も、運営者の <strong>むりこ</strong> が本音でレビューします。
-				節約はしません。<strong>払う価値があるかどうか</strong>だけを書きます。
-			</p>
-			<h2>こんな人に読んでほしい</h2>
-			<ul>
-				<li>共働きで、毎日時間に追われている</li>
-				<li>家事や育児を少しでもラクにしたい</li>
-				<li>時短サービスが気になるけど、契約して失敗したくない</li>
-				<li>口コミやレビューを読んでから決めたい</li>
-			</ul>
-			<p>
-				「これ、うちにも必要かな？」と迷っているあなたの背中を押す（ときには止める）ブログです。
-				まずは <a href="/blog">記事一覧</a> をのぞいてみてください。
-			</p>
+			<section class="hero">
+				<p class="hero-eyebrow">共働き子育て世帯のための時短課金レビュー</p>
+				<h1>もう無理。を、<br class="sp-only" />お金で解決する。</h1>
+				<p class="hero-lead">
+					仕事も家事も育児も全部。そんな毎日に「お金で時間を買う」サービスを、
+					元・限界共働きの<strong>むりこ</strong>が本音でレビューします。
+					いいものはいい、ダメなものはダメ。あなたが契約して後悔しないために。
+				</p>
+				<div class="hero-actions">
+					<a href="/blog" class="btn">レビューを読む</a>
+					<a href="/about" class="hero-link">むりこって誰？ →</a>
+				</div>
+			</section>
+
+			<section class="cats">
+				<h2 class="section-title">カテゴリーから探す</h2>
+				<div class="cat-grid">
+					{
+						categories.map((c) => (
+							<a href="/blog" class="cat-card">
+								<span class="cat-icon">{c.icon}</span>
+								<span class="cat-name">{c.name}</span>
+								<span class="cat-desc">{c.desc}</span>
+							</a>
+						))
+					}
+				</div>
+			</section>
+
+			<section class="latest">
+				<h2 class="section-title">新着レビュー</h2>
+				{
+					latest.length === 0 ? (
+						<div class="empty">
+							<p>📝 ただいま最初のレビューを準備中です。</p>
+							<p class="empty-sub">近日公開予定。お楽しみに！</p>
+						</div>
+					) : (
+						<div class="post-grid">
+							{latest.map((post) => (
+								<a href={`/blog/${post.id}/`} class="post-card">
+									{post.data.heroImage && (
+										<div class="post-thumb">
+											<Image width={600} height={340} src={post.data.heroImage} alt="" />
+										</div>
+									)}
+									<div class="post-body">
+										<p class="post-date">
+											<FormattedDate date={post.data.pubDate} />
+										</p>
+										<h3 class="post-title">{post.data.title}</h3>
+										<p class="post-desc">{post.data.description}</p>
+									</div>
+								</a>
+							))}
+						</div>
+					)
+				}
+			</section>
 		</main>
 		<Footer />
 	</body>
+
+	<style>
+		/* ヒーロー */
+		.hero {
+			text-align: center;
+			padding: 2.5em 1em 2em;
+			background: linear-gradient(160deg, var(--accent-soft), var(--bg));
+			border-radius: var(--radius);
+			margin-bottom: 3em;
+		}
+		.hero-eyebrow {
+			display: inline-block;
+			background: #fff;
+			color: var(--accent-dark);
+			font-weight: 700;
+			font-size: 0.85rem;
+			padding: 0.4em 1.1em;
+			border-radius: 999px;
+			margin: 0 0 1em;
+			box-shadow: var(--box-shadow);
+		}
+		.hero h1 {
+			font-size: 2.7rem;
+			letter-spacing: 0.02em;
+			margin-bottom: 0.5em;
+		}
+		.hero-lead {
+			max-width: 640px;
+			margin: 0 auto 1.6em;
+			color: rgb(var(--gray-dark));
+		}
+		.hero-actions {
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			gap: 1.4em;
+			flex-wrap: wrap;
+		}
+		.hero-link {
+			font-weight: 700;
+			color: var(--accent-dark);
+		}
+
+		/* セクション見出し */
+		.section-title {
+			position: relative;
+			padding-left: 0.6em;
+			margin-bottom: 1em;
+			font-size: 1.45rem;
+		}
+		.section-title::before {
+			content: "";
+			position: absolute;
+			left: 0;
+			top: 0.15em;
+			bottom: 0.15em;
+			width: 5px;
+			border-radius: 999px;
+			background: var(--accent);
+		}
+
+		/* カテゴリーカード */
+		.cats {
+			margin-bottom: 3em;
+		}
+		.cat-grid {
+			display: grid;
+			grid-template-columns: repeat(4, 1fr);
+			gap: 1em;
+		}
+		.cat-card {
+			display: flex;
+			flex-direction: column;
+			gap: 0.25em;
+			padding: 1.4em 1.2em;
+			background: var(--surface);
+			border: 1px solid rgb(var(--gray-light));
+			border-radius: var(--radius);
+			text-decoration: none;
+			color: rgb(var(--black));
+			transition: transform 0.15s ease, box-shadow 0.15s ease;
+		}
+		.cat-card:hover {
+			text-decoration: none;
+			transform: translateY(-3px);
+			box-shadow: var(--box-shadow-hover);
+		}
+		.cat-icon {
+			font-size: 2rem;
+		}
+		.cat-name {
+			font-weight: 800;
+			font-size: 1.2rem;
+		}
+		.cat-desc {
+			font-size: 0.85rem;
+			color: rgb(var(--gray));
+			line-height: 1.5;
+		}
+
+		/* 新着記事グリッド */
+		.post-grid {
+			display: grid;
+			grid-template-columns: repeat(3, 1fr);
+			gap: 1.5em;
+		}
+		.post-card {
+			display: flex;
+			flex-direction: column;
+			background: var(--surface);
+			border: 1px solid rgb(var(--gray-light));
+			border-radius: var(--radius);
+			overflow: hidden;
+			text-decoration: none;
+			color: rgb(var(--black));
+			transition: transform 0.15s ease, box-shadow 0.15s ease;
+		}
+		.post-card:hover {
+			text-decoration: none;
+			transform: translateY(-3px);
+			box-shadow: var(--box-shadow-hover);
+		}
+		.post-thumb img {
+			display: block;
+			width: 100%;
+			height: 180px;
+			object-fit: cover;
+			border-radius: 0;
+		}
+		.post-body {
+			padding: 1.1em 1.2em 1.4em;
+		}
+		.post-date {
+			margin: 0 0 0.3em;
+			font-size: 0.8rem;
+			color: rgb(var(--gray));
+		}
+		.post-title {
+			font-size: 1.15rem;
+			margin: 0 0 0.4em;
+			line-height: 1.4;
+		}
+		.post-desc {
+			margin: 0;
+			font-size: 0.9rem;
+			color: rgb(var(--gray));
+			line-height: 1.6;
+		}
+
+		/* 空状態 */
+		.empty {
+			text-align: center;
+			padding: 2.5em 1em;
+			background: var(--surface);
+			border: 1px dashed rgb(var(--gray));
+			border-radius: var(--radius);
+			color: rgb(var(--gray-dark));
+		}
+		.empty p {
+			margin: 0.2em 0;
+			font-weight: 700;
+		}
+		.empty-sub {
+			font-weight: 400 !important;
+			color: rgb(var(--gray));
+		}
+
+		.sp-only {
+			display: none;
+		}
+
+		@media (max-width: 860px) {
+			.cat-grid {
+				grid-template-columns: repeat(2, 1fr);
+			}
+			.post-grid {
+				grid-template-columns: repeat(2, 1fr);
+			}
+		}
+		@media (max-width: 560px) {
+			.hero h1 {
+				font-size: 1.95rem;
+			}
+			.sp-only {
+				display: inline;
+			}
+			.post-grid {
+				grid-template-columns: 1fr;
+			}
+		}
+	</style>
 </html>
