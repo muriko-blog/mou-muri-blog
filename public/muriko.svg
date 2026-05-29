@@ -1,0 +1,61 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="200" height="200" role="img" aria-label="むりこ">
+  <defs>
+    <clipPath id="circle"><circle cx="100" cy="100" r="100"/></clipPath>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#fff3ee"/>
+      <stop offset="1" stop-color="#fde0d6"/>
+    </linearGradient>
+  </defs>
+  <g clip-path="url(#circle)">
+    <!-- 背景 -->
+    <rect width="200" height="200" fill="url(#bg)"/>
+
+    <!-- 体・コーラルの服 -->
+    <path d="M34 200 C34 156 64 138 100 138 C136 138 166 156 166 200 Z" fill="#ef6a4c"/>
+    <!-- 白いエプロン -->
+    <path d="M84 144 C84 138 116 138 116 144 L120 200 H80 Z" fill="#fbf7f2"/>
+    <path d="M88 150 H112" stroke="#ecd9cf" stroke-width="2"/>
+    <!-- エプロンの肩ひも -->
+    <path d="M90 140 L86 200" stroke="#fbf7f2" stroke-width="6" stroke-linecap="round"/>
+    <path d="M110 140 L114 200" stroke="#fbf7f2" stroke-width="6" stroke-linecap="round"/>
+    <!-- 首 -->
+    <path d="M88 132 H112 V150 C112 158 104 162 100 162 C96 162 88 158 88 150 Z" fill="#f6c39c"/>
+
+    <!-- 髪（後ろ） -->
+    <path d="M46 106 C46 60 70 34 100 34 C130 34 154 60 154 106 C154 126 149 140 143 150 C150 122 146 86 134 70 C140 96 137 122 131 134 L69 134 C63 122 60 96 66 70 C54 86 50 122 57 150 C51 140 46 126 46 106 Z" fill="#5b4636"/>
+
+    <!-- お団子ヘア＋コーラルのヘアゴム -->
+    <circle cx="100" cy="32" r="17" fill="#5b4636"/>
+    <circle cx="100" cy="32" r="9" fill="#6b5443"/>
+    <path d="M83 36 C90 30 110 30 117 36" stroke="#ef6a4c" stroke-width="4" fill="none" stroke-linecap="round"/>
+
+    <!-- 顔 -->
+    <ellipse cx="100" cy="100" rx="45" ry="49" fill="#f6c39c"/>
+    <!-- 耳 -->
+    <circle cx="56" cy="104" r="8" fill="#f6c39c"/>
+    <circle cx="144" cy="104" r="8" fill="#f6c39c"/>
+
+    <!-- 前髪 -->
+    <path d="M55 98 C55 58 75 40 100 40 C125 40 145 58 145 98 C143 82 134 72 120 70 C125 78 124 86 124 86 C117 75 109 71 101 72 C105 80 104 90 104 90 C95 76 83 75 76 80 C80 70 83 67 83 67 C68 73 58 84 55 98 Z" fill="#5b4636"/>
+
+    <!-- 眉 -->
+    <path d="M71 90 C77 86 86 86 92 90" stroke="#5b4636" stroke-width="3" fill="none" stroke-linecap="round"/>
+    <path d="M108 90 C114 86 123 86 129 90" stroke="#5b4636" stroke-width="3" fill="none" stroke-linecap="round"/>
+
+    <!-- 目（ぱっちり・ハイライト入り） -->
+    <ellipse cx="82" cy="104" rx="6.5" ry="8" fill="#3c3740"/>
+    <ellipse cx="118" cy="104" rx="6.5" ry="8" fill="#3c3740"/>
+    <circle cx="84" cy="101" r="2.2" fill="#fff"/>
+    <circle cx="120" cy="101" r="2.2" fill="#fff"/>
+
+    <!-- ほっぺ -->
+    <ellipse cx="72" cy="116" rx="9" ry="6" fill="#f4948b" opacity="0.7"/>
+    <ellipse cx="128" cy="116" rx="9" ry="6" fill="#f4948b" opacity="0.7"/>
+
+    <!-- 口（にっこり） -->
+    <path d="M88 120 C95 130 105 130 112 120" stroke="#c8674e" stroke-width="3.5" fill="none" stroke-linecap="round"/>
+
+    <!-- 汗（がんばってる感） -->
+    <path d="M142 84 C142 90 138 95 138 95 C138 95 134 90 134 84 C134 80 138 78 140 80 C141 81 142 82 142 84 Z" fill="#8fd0ee"/>
+  </g>
+</svg>

@@ -4,7 +4,7 @@ interface Props {
 	name?: string;
 	icon?: string; // 絵文字 or 画像URL（将来むりこのイラストに差し替え）
 }
-const { side = 'left', name = 'むりこ', icon = '😮‍💨' } = Astro.props;
+const { side = 'left', name = 'むりこ', icon = '/muriko.svg' } = Astro.props;
 const isImg = icon.startsWith('/') || icon.startsWith('http');
 ---
 

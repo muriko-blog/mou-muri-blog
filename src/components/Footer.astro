@@ -4,7 +4,8 @@ const today = new Date();
 
 <footer>
 	<div class="footer-inner">
-		<p class="footer-brand">😮‍💨 もう無理.com</p>
+		<img class="footer-avatar" src="/muriko.svg" alt="むりこ" width="56" height="56" />
+		<p class="footer-brand">もう無理.com</p>
 		<p class="footer-tagline">共働き子育て世帯のための時短課金レビュー</p>
 		<div class="footer-links">
 			<a href="/about">運営者について</a>
@@ -27,6 +28,14 @@ const today = new Date();
 	.footer-inner {
 		max-width: var(--container);
 		margin: 0 auto;
+	}
+	.footer-avatar {
+		width: 56px;
+		height: 56px;
+		border-radius: 50%;
+		border: 2px solid var(--accent);
+		background: var(--accent-soft);
+		margin-bottom: 0.4em;
 	}
 	.footer-brand {
 		font-weight: 800;
