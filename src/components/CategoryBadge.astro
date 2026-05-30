@@ -1,0 +1,43 @@
+---
+import { getCategory } from '../utils/categories';
+
+interface Props {
+	slug?: string;
+	size?: 'sm' | 'md';
+}
+const { slug, size = 'sm' } = Astro.props;
+const cat = getCategory(slug);
+---
+
+{
+	cat && (
+		<span class:list={['cat-badge', size]} style={`background:${cat.color}`}>
+			<span class="cat-badge-icon">{cat.icon}</span>
+			<span>{cat.name}</span>
+		</span>
+	)
+}
+
+<style>
+	.cat-badge {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.3em;
+		color: #fff;
+		font-weight: 700;
+		border-radius: 999px;
+		line-height: 1;
+		white-space: nowrap;
+	}
+	.cat-badge.sm {
+		padding: 0.35em 0.8em;
+		font-size: 0.75rem;
+	}
+	.cat-badge.md {
+		padding: 0.5em 1em;
+		font-size: 0.85rem;
+	}
+	.cat-badge-icon {
+		font-size: 0.9em;
+	}
+</style>

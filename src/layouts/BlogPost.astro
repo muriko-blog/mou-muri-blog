@@ -1,56 +1,191 @@
 ---
 import { Image } from 'astro:assets';
-import type { CollectionEntry } from 'astro:content';
+import { getCollection, type CollectionEntry } from 'astro:content';
 import BaseHead from '../components/BaseHead.astro';
 import Footer from '../components/Footer.astro';
 import FormattedDate from '../components/FormattedDate.astro';
 import Header from '../components/Header.astro';
+import CategoryBadge from '../components/CategoryBadge.astro';
+import { categoryList } from '../utils/categories';
 
 type Props = CollectionEntry<'blog'>['data'];
 
-const { title, description, pubDate, updatedDate, heroImage } = Astro.props;
+const { title, description, pubDate, updatedDate, heroImage, category } = Astro.props;
+
+const allPosts = (await getCollection('blog')).sort(
+	(a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
+);
+const latestPosts = allPosts.filter((p) => p.data.title !== title).slice(0, 3);
 ---
 
 <html lang="ja">
 	<head>
 		<BaseHead title={title} description={description} />
 		<style>
-			main {
-				width: calc(100% - 2em);
-				max-width: 100%;
-				margin: 0;
+			.post-layout {
+				display: grid;
+				grid-template-columns: minmax(0, 1fr) 280px;
+				gap: 2em;
+				align-items: start;
 			}
 			.hero-image {
 				width: 100%;
+				margin-bottom: 1.5em;
 			}
 			.hero-image img {
 				display: block;
-				margin: 0 auto;
 				border-radius: 12px;
 				box-shadow: var(--box-shadow);
+				width: 100%;
 			}
 			.prose {
-				width: 720px;
-				max-width: calc(100% - 2em);
-				margin: auto;
-				padding: 1em;
+				background: var(--surface);
+				border-radius: var(--radius);
+				padding: 1.5em 2em;
+				box-shadow: var(--box-shadow);
 				color: rgb(var(--gray-dark));
+				min-width: 0;
 			}
 			.title {
-				margin-bottom: 1em;
-				padding: 1em 0;
-				text-align: center;
-				line-height: 1;
+				margin-bottom: 1.4em;
+				padding-bottom: 1em;
+				border-bottom: 1px solid rgb(var(--gray-light));
 			}
 			.title h1 {
-				margin: 0 0 0.5em 0;
+				margin: 0.3em 0 0.4em;
+				font-size: 1.9rem;
+				line-height: 1.4;
 			}
-			.date {
-				margin-bottom: 0.5em;
+			.meta {
+				display: flex;
+				align-items: center;
+				gap: 0.7em;
+				flex-wrap: wrap;
+				font-size: 0.85rem;
 				color: rgb(var(--gray));
 			}
 			.last-updated-on {
 				font-style: italic;
+			}
+
+			/* サイドバー */
+			.sidebar {
+				display: flex;
+				flex-direction: column;
+				gap: 1.5em;
+				position: sticky;
+				top: 80px;
+			}
+			.side-card {
+				background: var(--surface);
+				border-radius: var(--radius);
+				padding: 1.2em;
+				box-shadow: var(--box-shadow);
+			}
+			.side-title {
+				font-size: 0.9rem;
+				font-weight: 800;
+				margin: 0 0 0.8em;
+				padding-bottom: 0.5em;
+				border-bottom: 2px solid var(--accent);
+				color: rgb(var(--black));
+			}
+			/* プロフィールカード */
+			.profile {
+				text-align: center;
+			}
+			.profile-avatar {
+				width: 90px;
+				height: 90px;
+				border-radius: 50%;
+				border: 3px solid var(--accent);
+				background: var(--accent-soft);
+				margin-bottom: 0.3em;
+			}
+			.profile-name {
+				font-weight: 800;
+				margin: 0.2em 0 0.3em;
+			}
+			.profile-bio {
+				font-size: 0.85rem;
+				color: rgb(var(--gray));
+				margin: 0 0 0.8em;
+				line-height: 1.6;
+			}
+			.profile-link {
+				display: inline-block;
+				font-size: 0.85rem;
+				font-weight: 700;
+				color: var(--accent-dark);
+			}
+			/* サイドバー記事 */
+			.side-posts {
+				display: flex;
+				flex-direction: column;
+				gap: 0.8em;
+			}
+			.side-post {
+				display: grid;
+				grid-template-columns: 80px 1fr;
+				gap: 0.6em;
+				align-items: start;
+				text-decoration: none;
+				color: rgb(var(--black));
+			}
+			.side-post img {
+				width: 80px;
+				height: 60px;
+				object-fit: cover;
+				border-radius: 6px;
+			}
+			.side-post-title {
+				font-size: 0.85rem;
+				font-weight: 700;
+				line-height: 1.4;
+				margin: 0;
+			}
+			.side-post:hover .side-post-title {
+				color: var(--accent);
+			}
+			/* カテゴリーリスト */
+			.cat-list {
+				display: flex;
+				flex-direction: column;
+				gap: 0.5em;
+			}
+			.cat-list-item {
+				display: flex;
+				align-items: center;
+				gap: 0.5em;
+				padding: 0.5em 0.7em;
+				border-radius: 8px;
+				background: var(--cat-soft);
+				border-left: 4px solid var(--cat-color);
+				font-weight: 700;
+				color: var(--cat-color);
+				text-decoration: none;
+				font-size: 0.9rem;
+			}
+			.cat-list-item:hover {
+				text-decoration: none;
+				filter: brightness(0.95);
+			}
+
+			@media (max-width: 960px) {
+				.post-layout {
+					grid-template-columns: 1fr;
+				}
+				.sidebar {
+					position: static;
+				}
+			}
+			@media (max-width: 560px) {
+				.prose {
+					padding: 1.2em 1em;
+				}
+				.title h1 {
+					font-size: 1.5rem;
+				}
 			}
 		</style>
 	</head>
@@ -58,28 +193,88 @@ const { title, description, pubDate, updatedDate, heroImage } = Astro.props;
 	<body>
 		<Header />
 		<main>
-			<article>
-				<div class="hero-image">
-					{heroImage && <Image width={1020} height={510} src={heroImage} alt="" />}
-				</div>
-				<div class="prose">
-					<div class="title">
-						<div class="date">
-							<FormattedDate date={pubDate} />
+			<div class="post-layout">
+				<article>
+					{
+						heroImage && (
+							<div class="hero-image">
+								<Image width={1020} height={510} src={heroImage} alt="" />
+							</div>
+						)
+					}
+					<div class="prose">
+						<div class="title">
+							<div class="meta">
+								<FormattedDate date={pubDate} />
+								{category && <CategoryBadge slug={category} />}
+								{
+									updatedDate && (
+										<span class="last-updated-on">
+											Last updated on <FormattedDate date={updatedDate} />
+										</span>
+									)
+								}
+							</div>
+							<h1>{title}</h1>
+						</div>
+						<slot />
+					</div>
+				</article>
+
+				<aside class="sidebar">
+					<div class="side-card profile">
+						<img class="profile-avatar" src="/muriko.svg" alt="むりこ" />
+						<p class="profile-name">むりこ</p>
+						<p class="profile-bio">
+							共働き2児の母。「もう無理」な日々を金で解決するレビューを書いています。
+						</p>
+						<a href="/about" class="profile-link">プロフィールを見る →</a>
+					</div>
+
+					<div class="side-card">
+						<p class="side-title">📰 新着レビュー</p>
+						{
+							latestPosts.length === 0 ? (
+								<p style="font-size:0.85rem; color:rgb(var(--gray));">準備中です</p>
+							) : (
+								<div class="side-posts">
+									{latestPosts.map((p) => (
+										<a href={`/blog/${p.id}/`} class="side-post">
+											{p.data.heroImage && (
+												<Image
+													width={160}
+													height={120}
+													src={p.data.heroImage}
+													alt=""
+												/>
+											)}
+											<p class="side-post-title">{p.data.title}</p>
+										</a>
+									))}
+								</div>
+							)
+						}
+					</div>
+
+					<div class="side-card">
+						<p class="side-title">🗂 カテゴリー</p>
+						<div class="cat-list">
 							{
-								updatedDate && (
-									<div class="last-updated-on">
-										Last updated on <FormattedDate date={updatedDate} />
-									</div>
-								)
+								categoryList.map((c) => (
+									<a
+										href="/blog"
+										class="cat-list-item"
+										style={`--cat-color:${c.color}; --cat-soft:${c.soft}`}
+									>
+										<span>{c.icon}</span>
+										<span>{c.name}</span>
+									</a>
+								))
 							}
 						</div>
-						<h1>{title}</h1>
-						<hr />
 					</div>
-					<slot />
-				</div>
-			</article>
+				</aside>
+			</div>
 		</main>
 		<Footer />
 	</body>
